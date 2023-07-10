@@ -184,7 +184,7 @@ exports.login = async(req,res)=>{
         const payLoad = {
             email:user.email,
             id:user._id,
-            role:user.role,
+            role:user.accountType``,
         }
         const token = jwt.sign(payLoad,process.env.JWT_SECRET,{
             expiresIn:"2h",
