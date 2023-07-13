@@ -36,11 +36,3 @@ tag:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"tag",
 },
-studentEnrolled:[{
-    type:mongoose.Schema.Types.ObjectId,
-    required:true,
-    ref:"user"
-}]
-});
-
-module.exports = mongoose.model("course",courseSchema);
