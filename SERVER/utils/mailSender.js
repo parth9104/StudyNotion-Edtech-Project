@@ -1,26 +1,29 @@
-const nodeMailer = require("nodemailer");
-const mailSender = async(email,title,body)=>{
+const nodemailer = require("nodemailer");
 
-try{
-    let trnasport = nodemailer.createTransport({
-    host:process.env.MAIL_HOST,
-    auth:{
-        user:process.env.MAIL_USER,
-        pass:process.env.MAIL_PASS,
-    }   
-    })
-    let info = await trasnporter.sendMail({
-        from:'StudyNotion || codehelp-by babbar',
-        to:`${email}`,
-        email:`${title}`,
-        html:`${body}`,
+const mailSender = async (email, title, body) => {
+    try{
+            let transporter = nodemailer.createTransport({
+                host:process.env.MAIL_HOST,
+                auth:{
+                    user: process.env.MAIL_USER,
+                    pass: process.env.MAIL_PASS,
+                }
+            })
 
-    })
-    console.log(info);
-    return info;
+
+            let info = await transporter.sendMail({
+                from: 'StudyNotion || CodeHelp - by Babbar',
+                to:`${email}`,
+                subject: `${title}`,
+                html: `${body}`,
+            })
+            console.log(info);
+            return info;
+    }
+    catch(error) {
+        console.log(error.message);
+    }
 }
-catch(error){
-    console.log(error.message);
-}
-}
-module.exports  = mailSender;
+
+
+module.exports = mailSender;

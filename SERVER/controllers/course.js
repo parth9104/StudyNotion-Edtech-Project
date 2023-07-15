@@ -1,9 +1,8 @@
-const Course = require("../models/course");
-const Category  = require("../models/category");
-const User = require("../models/user");
-const {uploadImageToCloudinary} = require("../utils/imageUploader");
-
-//createCourse Handler function 
+const Course = require("../models/Course");
+const Category = require("../models/Category");
+const User = require("../models/User");
+const { uploadImageToCloudinary } = require("../utils/imageUploader");
+// Function to create a new course
 exports.createCourse = async (req, res) => {
 	try {
 		// Get user ID from request object
@@ -167,7 +166,7 @@ exports.getCourseDetails = async (req, res) => {
                                             }
                                         )
                                         .populate("category")
-                                        .populate("ratingAndreviews")
+                                        //.populate("ratingAndreviews")
                                         .populate({
                                             path:"courseContent",
                                             populate:{
