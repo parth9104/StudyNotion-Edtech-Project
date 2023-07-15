@@ -24,6 +24,14 @@ const userSchema = new mongoose.Schema({
         enum:["Admin","Student","Instructor"],
         required:true,
     },
+    active: {
+        type: Boolean,
+        default: true,
+    },
+    approved: {
+        type: Boolean,
+        default: true,
+    },
     additionalDetails:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
@@ -37,6 +45,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    
     token:{
         type:String,
     },
@@ -46,7 +55,13 @@ const userSchema = new mongoose.Schema({
     courseProgress:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"courseProgress",
-    }]
-});
+    },],
+
+},
+		// Add timestamps for when the document is created and last modified
+
+{ timestamps: true }
+
+);
 
 module.exports = mongoose.model("user",userSchema);

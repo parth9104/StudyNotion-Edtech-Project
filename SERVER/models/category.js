@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+// Define the Tags schema
+
 const categorySchema = new mongoose.Schema({
     name:{
         type:String,
@@ -6,10 +8,11 @@ const categorySchema = new mongoose.Schema({
     description:{
         type:String,
     },
-    course:{
+    course:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"course",
     },
+],
 });
 
 module.exports = mongoose.model("category",categorySchema);

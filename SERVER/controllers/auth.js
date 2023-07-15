@@ -6,64 +6,6 @@ const { JsonWebTokenError } = require("jsonwebtoken");
 const bcrypt = require(bcrypt);
 const jwt = require(JsonWebToken);
 require("dotenv").config();
-//send otp
-exports.sendOTP = async(req,res)=>{
-    try{
-        //fetch email from request body
-        const {email} = req.body;
-
-        //check if user already exist
-        const checkUserPresent = await UserActivation.findOne({email});
-
-        //if user already exist then return a response
-        if(checkUserPresent){
-            return res.status(401).json({
-                success:false,
-                message:'user already registered'
-            })
-        }
-        //generate otp
-        var otp = otpGenerator.generate(6,{
-            upperCaseAlphabets:false,
-            lowerCaseAlphabets:false,
-            specialChars:false,
-        });
-        console.log("otp generated ",otp);
-
-       //check unique otp or not
-       let result  = await OTP.findOne({otp:otp});
-       while(result){
-        var otp = otpGenerator.generate(6,{
-            upperCaseAlphabets:false,
-            lowerCaseAlphabets:false,
-            specialChars:false,
-        });
-         result  = await OTP.findOne({otp:otp});
-    }
-    
-    const otpPayload = {email,otp};
-    //create an entry for otp
-    const otpBody = await OTP.create(otpPayload);
-    console.log(otpbody);
-
-    //return response successfully
-    res.status(200).json({
-        succes:true,
-        message:'otp sent successfully',
-        otp
-    })
-}
-catch(error){
-    console.log(error);
-
-    return res.status(500).json({
-        success:false,
-        message:error.message,
-    })
-}
-};
-
-
 
 //sign up
 exports.signup = async(req,res)=>{
@@ -173,7 +115,8 @@ exports.login = async(req,res)=>{
     } 
     //user check exist or not
     const user  = await user.findOne({email}).populate("additionalDetails");
-    if(!user){
+    if(!user){			// Return 401 Unauthorized status code with error message
+
         return res.status(401).json({
             success:false,
             message:"user is not registered sign up first",
@@ -221,5 +164,136 @@ exports.login = async(req,res)=>{
     });
  }
 };
-//change password
 
+
+//send otp
+exports.sendOTP = async(req,res)=>{
+    try{
+        //fetch email from request body
+        const {email} = req.body;
+
+        //check if user already exist
+        const checkUserPresent = await UserActivation.findOne({email});
+
+        //if user already exist then return a response
+        if(checkUserPresent){
+            return res.status(401).json({
+                success:false,
+                message:'user already registered'
+            })
+        }
+        //generate otp
+        var otp = otpGenerator.generate(6,{
+            upperCaseAlphabets:false,
+            lowerCaseAlphabets:false,
+            specialChars:false,
+        });
+        console.log("otp generated ",otp);
+
+       //check unique otp or not
+       let result  = await OTP.findOne({otp:otp});
+       while(result){
+        var otp = otpGenerator.generate(6,{
+            upperCaseAlphabets:false,
+            lowerCaseAlphabets:false,
+            specialChars:false,
+        });
+         result  = await OTP.findOne({otp:otp});
+    }
+    
+    const otpPayload = {email,otp};
+    //create an entry for otp
+    const otpBody = await OTP.create(otpPayload);
+    console.log(otpbody);
+
+    //return response successfully
+    res.status(200).json({
+        succes:true,
+        message:'otp sent successfully',
+        otp
+    })
+}
+catch(error){
+    console.log(error);
+
+    return res.status(500).json({
+        success:false,
+        message:error.message,
+    })
+}
+};
+
+
+
+// Controller for Changing Password
+exports.changePassword = async (req, res) => {
+	try {
+		// Get user data from req.user
+		const userDetails = await User.findById(req.user.id);
+
+		// Get old password, new password, and confirm new password from req.body
+		const { oldPassword, newPassword, confirmNewPassword } = req.body;
+
+		// Validate old password
+		const isPasswordMatch = await bcrypt.compare(
+			oldPassword,
+			userDetails.password
+		);
+		if (!isPasswordMatch) {
+			// If old password does not match, return a 401 (Unauthorized) error
+			return res
+				.status(401)
+				.json({ success: false, message: "The password is incorrect" });
+		}
+
+		// Match new password and confirm new password
+		if (newPassword !== confirmNewPassword) {
+			// If new password and confirm new password do not match, return a 400 (Bad Request) error
+			return res.status(400).json({
+				success: false,
+				message: "The password and confirm password does not match",
+			});
+		}
+
+		// Update password
+		const encryptedPassword = await bcrypt.hash(newPassword, 10);
+		const updatedUserDetails = await User.findByIdAndUpdate(
+			req.user.id,
+			{ password: encryptedPassword },
+			{ new: true }
+		);
+
+		// Send notification email
+		try {
+			const emailResponse = await mailSender(
+				updatedUserDetails.email,
+				passwordUpdated(
+					updatedUserDetails.email,
+					`Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+				)
+			);
+			console.log("Email sent successfully:", emailResponse.response);
+		} catch (error) {
+			// If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
+			console.error("Error occurred while sending email:", error);
+			return res.status(500).json({
+				success: false,
+				message: "Error occurred while sending email",
+				error: error.message,
+			});
+		}
+
+		// Return success response
+		return res
+			.status(200)
+			.json({ success: true, message: "Password updated successfully" });
+	} catch (error) {
+		// If there's an error updating the password, log the error and return a 500 (Internal Server Error) error
+		console.error("Error occurred while updating password:", error);
+		return res.status(500).json({
+			success: false,
+			message: "Error occurred while updating password",
+			error: error.message,
+		});
+	}
+};

@@ -37,50 +37,33 @@ exports.createSection  = async(req,res)=>{
 
         return res.status(500).json({
             success:false,
-            message:"unable to create section please try again",
+            message:"unable to create section please try again Inernal server error",
             error:error.message,
         });
     }
 }
 
 //middleware function reponse handler
-exports.updateSection = async(req,res)=>{
-try{
-     //data input
-     //data validation
-     //update data 
-     //return response
-
-     //data input
-     const{sectionName,sectionId} = req.body;
-     //data validation 
-     if(!sectionName || !sectionId){
-        return res.status(400).json({
-            success:false,
-            message:"missing property",
-
-        });
-     }
-//update data
-
-const section = await section.findByIdAndUpdate(sectionId,{sectionName},{new:true});
-//return res
-return res.status(200).json({
-    success:true,
-    message:"section updated successfully",
-});
-
-}
-catch(error){
-
-    return res.status(500).json({
-        success:false,
-        message:"unable to create section please try again",
-        error:error.message,
-    });
-}
-}
-
+exports.updateSection = async (req, res) => {
+	try {
+		const { sectionName, sectionId } = req.body;
+		const section = await Section.findByIdAndUpdate(
+			sectionId,
+			{ sectionName },
+			{ new: true }
+		);
+		res.status(200).json({
+			success: true,
+			message: section,
+		});
+	} catch (error) {
+		console.error("Error updating section:", error);
+		res.status(500).json({
+			success: false,
+			message: "Internal server error",
+		});
+	}
+};
 exports.deleteSection = async(req,res)=>{
     try{
          //getByID
@@ -99,12 +82,11 @@ exports.deleteSection = async(req,res)=>{
 
 
     }
-    catch(error){
-
-        return res.status(500).json({
-            success:false,
-            message:"unable to delete section please try again",
-            error:error.message,
-        });
-    }
-}
+    catch (error) {
+		console.error("Error deleting section:", error);
+		res.status(500).json({
+			success: false,
+			message: "Internal server error",
+		});
+	}
+};
