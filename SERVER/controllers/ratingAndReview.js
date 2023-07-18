@@ -31,7 +31,7 @@ exports.createRating = async (req, res) => {
                     return res.status(403).json({
                         success:false,
                         message:'Course is already reviewed by the user',
-                    });
+                    }); 
                 }
         //create rating and review
         const ratingReview = await RatingAndReview.create({
