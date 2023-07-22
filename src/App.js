@@ -30,6 +30,14 @@ function App() {
             </OpenRoute>
           }
         />
+    <Route
+          path="forgot-password"
+          element={
+            <OpenRoute>
+              <Login />
+            </OpenRoute>
+          }
+        />
     </Routes>
 
    </div>

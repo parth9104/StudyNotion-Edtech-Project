@@ -5,6 +5,7 @@ import { resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiconnector"
 import { endpoints } from "../api"
+// import {getPasswordResetToken} from "../operations/authAPI"
 
 const {
   SENDOTP_API,
@@ -181,3 +182,4 @@ export function logout(navigate) {
     navigate("/")
   }
 }
+
