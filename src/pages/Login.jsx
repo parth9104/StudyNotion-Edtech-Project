@@ -1,5 +1,5 @@
 import loginImg from "../assets/Images/login.webp"
-import Template from "../../../../../../Downloads/StudyNotion4 2/New Folder/StudyNotion4 2/src/components/core/Auth/Template"
+import Template from "../components/core/Auth/Template"
 
 function Login() {
   return (
