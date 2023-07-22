@@ -7,9 +7,11 @@ import { useSelector } from 'react-redux'
 import {AiOutlineShoppingCart} from "react-icons/ai"
 import ProfileDropDown from '../core/Auth/ProfileDropDown'
 import { apiConnector } from '../../services/apiconnector'
-import { categories } from '../../services/apis'
+import { categories } from '../../services/api'
 import { useState } from 'react'
 import {IoIosArrowDropdownCircle} from "react-icons/io"
+import { Provider } from 'react-redux';
+
 
 const subLinks = [
     {
@@ -164,5 +166,3 @@ const Navbar = () => {
     </div>
   )
 }
-
-export default Navbar
