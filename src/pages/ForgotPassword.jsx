@@ -1,16 +1,16 @@
 import React, { useState }  from "react";
-import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 import {Link} from "react-router-dom"
 import { getPasswordResetToken } from "../services/operations/authAPI";
 const ForgotPassword =()=>{
     const[emailSent,setEmailsent] =useState(false);
     const[email, setEmail]=useState("");
     const{loading} = useSelector((state)=>state.auth);
-    const dipatch = useDispatch();
+    const dispatch = dispatch();
 
     const handleOnSubmit=(e)=>{
         e.preventDefault();
-        dipatch(getPasswordResetToken(email,setEmailSent));
+        dispatch(getPasswordResetToken(email,setEmailsent));
     }
     return(
         <div className='text-whit flex justify-center items-center '>
@@ -20,7 +20,7 @@ const ForgotPassword =()=>{
                 ):(
                     <div>
                         <h1>{
-                            !emailsent? "Reset your password":"check your email"
+                            !emailSent? "Reset your password":"check your email"
                         }
                         </h1>
                         <p>{
