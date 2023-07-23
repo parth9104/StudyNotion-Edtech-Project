@@ -5,6 +5,8 @@ import BannerImage2 from "../assets/Images/aboutus2.webp"
 import BannerImage3 from "../assets/Images/aboutus3.webp"
 import Quote from "../components/core/About/Quote";
 import FoundingStory from "../assets/Images/FoundingStory.png"
+import StatsComponent from "../components/core/About/Stats";
+import LearningGrid from "../components/core/About/LearningGrid";
 const About = () => {
 
     return (
@@ -31,9 +33,9 @@ const About = () => {
             </section>
             {/* section03 */}
             <section>
-                <div>
+                <div className='flex flex-col'>
                     {/* FoundingStory div */}
-                    <div>
+                    <div className='flex'>
                         {/* Founding story left box */}
                         <div>
                             <h1>Our Founding Story</h1>
@@ -49,17 +51,33 @@ const About = () => {
                         </div>
                     </div>
                     {/* vision and mission parent div */}
-                    <div>
+                    <div className='flex'>
                         {/* left box */}
                         <div>
 
+                            <h1>Our Vision</h1>
+                            <p>
+                            With this vision in mind, we set out on a journey to create an e-learning platform that would revolutionize the way people learn. Our team of dedicated experts worked tirelessly to develop a robust and intuitive platform that combines cutting-edge technology with engaging content, fostering a dynamic and interactive learning experience.
+                            </p>
                         </div>
                         {/* right div */}
                         <div>
-                            
+                            <h1>Our Mission</h1>
+                            <p>
+                                Our mission goes beyond just delivering courses online. We wanted to create a vibrant community of learners, where individuals can connect, collaborate, and learn from one another. We believe that knowledge thrives in an environment of sharing and dialogue, and we foster this spirit of collaboration through forums, live sessions, and networking opportunities.
+                            </p>
                         </div>
                     </div>
                 </div>
+            </section>
+
+            {/* section 04 */}
+            <section>
+               <StatsComponent/>
+            </section>
+            {/* section05 */}
+            <section>
+            <LearningGrid/>
             </section>
         </div>
     )
