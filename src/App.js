@@ -2,7 +2,6 @@ import "./App.css";
 import {Route, Routes } from "react-router-dom";
 import Home from "./pages/Home"
 import Navbar from "./components/common/Navbar"
-// import Navbar from ""
 import OpenRoute from "./components/core/Auth/OpenRoute"
 
 import Login from "./pages/Login"
@@ -11,6 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword"
 import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
+import Contact from "./components/common/ContactPage/ContactDetails";
 
 function App() {
   return (
@@ -63,6 +63,14 @@ function App() {
           element={
             <OpenRoute>
               <About/>
+            </OpenRoute>
+          }
+        />
+    <Route
+          path="contact"
+          element={
+            <OpenRoute>
+              <Contact/>
             </OpenRoute>
           }
         />
